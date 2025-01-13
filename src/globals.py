@@ -1,0 +1,1 @@
+logged_user = {'id': 1, 'username': 'nome123', 'first_name': 'Pafuncio', 'last_name': 'Pinto', 'password': 'e10adc3949ba59abbe56e057f20f883e', 'user_photo_url': None, 'role': 'ADMIN'}

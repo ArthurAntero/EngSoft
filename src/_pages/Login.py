@@ -1,13 +1,16 @@
 import streamlit as st
-from src.api.users import User
+from api.users import User
 from globals import logged_user
+
 
 def create_login_page():
     if logged_user.get("id") is None:
         st.header("Login to Your Account")
 
         email = st.text_input("Email", placeholder="Enter your email")
-        password = st.text_input("Password", type="password", placeholder="Enter your password")
+        password = st.text_input(
+            "Password", type="password", placeholder="Enter your password"
+        )
 
         if st.button("Login"):
             user_instance = User(email=email, password=password)
@@ -31,5 +34,5 @@ def create_login_page():
             logged_user["id"] = None
             logged_user["name"] = None
             logged_user["email"] = None
-            
+
             st.experimental_rerun()

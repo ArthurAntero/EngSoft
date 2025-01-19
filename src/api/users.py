@@ -2,10 +2,11 @@ import psycopg2
 import hashlib
 from decouple import config
 
-POSTGRES_DB = config('POSTGRES_DB')
-POSTGRES_USER = config('POSTGRES_USER')
-POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
-POSTGRES_PORT = config('POSTGRES_PORT')
+POSTGRES_DB = config("POSTGRES_DB")
+POSTGRES_USER = config("POSTGRES_USER")
+POSTGRES_PASSWORD = config("POSTGRES_PASSWORD")
+POSTGRES_PORT = config("POSTGRES_PORT")
+
 
 class User:
     def __init__(self, id=None, email=None, name=None, password=None):
@@ -21,7 +22,7 @@ class User:
                 user=POSTGRES_USER,
                 password=POSTGRES_PASSWORD,
                 host="localhost",
-                port=POSTGRES_PORT
+                port=POSTGRES_PORT,
             )
         except Exception as e:
             print(f"Error connecting to the database: {e}")
@@ -33,7 +34,7 @@ class User:
             hashed_password = hashlib.md5(self.password.encode()).hexdigest()
             cur.execute(
                 "INSERT INTO Users (email, name, password) VALUES (%s, %s, %s)",
-                (self.email, self.name, hashed_password)
+                (self.email, self.name, hashed_password),
             )
             conn.commit()
             conn.close()

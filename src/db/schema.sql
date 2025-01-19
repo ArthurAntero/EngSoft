@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Restaurants (
     user_id INTEGER
 );
 
-ALTER TABLE "Restaurants" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id") ON DELETE CASCADE;
+ALTER TABLE "restaurants" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
 
 CREATE TABLE IF NOT EXISTS Menu (
     id SERIAL PRIMARY KEY,
@@ -25,22 +25,22 @@ CREATE TABLE IF NOT EXISTS Menu (
     description VARCHAR NOT NULL,
     menu_photo VARCHAR,
     restaurant_id INTEGER,
-    user_id INTEGER,
+    user_id INTEGER
 );
 
-ALTER TABLE "Menu" ADD FOREIGN KEY ("restaurant_id") REFERENCES "Restaurants" ("id") ON DELETE CASCADE;
-ALTER TABLE "Menu" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id") ON DELETE CASCADE;
+ALTER TABLE "menu" ADD FOREIGN KEY ("restaurant_id") REFERENCES "restaurants" ("id") ON DELETE CASCADE;
+ALTER TABLE "menu" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
 
 CREATE TABLE IF NOT EXISTS Review (
     id SERIAL PRIMARY KEY,
     description VARCHAR NOT NULL,
     grade REAL NOT NULL,
     restaurant_id INTEGER,
-    user_id INTEGER,
+    user_id INTEGER
 );
 
-ALTER TABLE "Review" ADD FOREIGN KEY ("restaurant_id") REFERENCES "Restaurants" ("id") ON DELETE CASCADE;
-ALTER TABLE "Review" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id") ON DELETE CASCADE;
+ALTER TABLE "review" ADD FOREIGN KEY ("restaurant_id") REFERENCES "restaurants" ("id") ON DELETE CASCADE;
+ALTER TABLE "review" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
 
 
 CREATE OR REPLACE FUNCTION encrypt_password()

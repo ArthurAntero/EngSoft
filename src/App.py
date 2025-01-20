@@ -7,6 +7,10 @@ from globals import logged_user
 
 from _pages import (
     Login,
+    Profile,
+    UserCreate,
+    UserUpdate,
+    ForgotPassword,
     Add_Restaurants,
     Add_Menus,
     Add_Reviews,
@@ -18,7 +22,6 @@ from _pages import (
     List_Reviews,
 )
 
-# Adiciona o diretório "src" ao Python Path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 with open('src/globals.py', 'r') as file:
@@ -131,4 +134,3 @@ if selected=="List Menus":
 
 if selected=="List Reviews":
     List_Reviews.create_page()
-

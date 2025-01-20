@@ -4,35 +4,50 @@ from globals import logged_user
 
 
 def create_page():
-    if logged_user.get("id") is None:
-        st.header("Login to Your Account")
 
-        email = st.text_input("Email", placeholder="Enter your email")
+    if logged_user.get("id") is None:
+        st.header("Faça Login na conta")
+
+        email = st.text_input("Email", placeholder="Email")
         password = st.text_input(
-            "Password", type="password", placeholder="Enter your password"
+            "Senha", type="password", placeholder="Senha"
         )
 
-        if st.button("Login"):
-            user_instance = User(email=email, password=password)
-            user = user_instance.authenticate_user()
+        col1, col2, col3 = st.columns([1, 1, 1])
 
-            if user:
-                logged_user["id"] = user["id"]
-                logged_user["name"] = user["name"]
-                logged_user["email"] = user["email"]
+        with col1:
+            if st.button("Login"):
+                user_instance = User(email=email, password=password)
+                user = user_instance.authenticate_user()
 
-                st.success(f"Welcome, {user['name']}!")
-                st.experimental_rerun()
-            else:
-                st.error("Invalid email or password. Please try again.")
+                if user:
+                    logged_user["id"] = user["id"]
+                    logged_user["name"] = user["name"]
+                    logged_user["email"] = user["email"]
+
+                    st.success(f"Bem vindo, {user['name']}!")
+                    st.experimental_set_query_params(page="profile")
+                    st.rerun()
+                else:
+                    st.error("Email ou senha inválidas. Tente novamente.")
+
+        with col2:
+            if st.button("Criar conta"):
+                st.experimental_set_query_params(page="signup")
+
+        with col3:
+            if st.button("Esqueci a senha"):
+                st.experimental_set_query_params(page="forgot_password")
     else:
-        st.header("You are already logged in")
-        st.write(f"Welcome back, {logged_user['name']}!")
-        st.write(f"Email: {logged_user['email']}")
+        st.write(f"Bem vindo de volta, {logged_user['name']}!")
 
         if st.button("Logout"):
             logged_user["id"] = None
             logged_user["name"] = None
             logged_user["email"] = None
 
-            st.experimental_rerun()
+            st.experimental_set_query_params(page="login")  # Volta à página de login
+            st.rerun()
+
+        if st.button("Minha conta"):
+            st.experimental_set_query_params(page="profile")

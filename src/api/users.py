@@ -31,10 +31,9 @@ class User:
         try:
             conn = self._db_connect()
             cur = conn.cursor()
-            hashed_password = hashlib.md5(self.password.encode()).hexdigest()
             cur.execute(
                 "INSERT INTO Users (email, name, password) VALUES (%s, %s, %s)",
-                (self.email, self.name, hashed_password),
+                (self.email, self.name, self.password),
             )
             conn.commit()
             conn.close()
@@ -61,3 +60,34 @@ class User:
         except Exception as e:
             print(f"Error authenticating user: {e}")
             return None
+        
+    def reset_password(self, new_password):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+            cur.execute(
+                "UPDATE Users SET password = %s WHERE email = %s",
+                (new_password, self.email),
+            )
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error resetting password: {e}")
+            return False
+        
+    def update_user(self):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+            cur.execute(
+                "UPDATE Users SET email = %s, name = %s WHERE id = %s",
+                (self.email, self.name, self.id),
+            )
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error updating user: {e}")
+            return False
+

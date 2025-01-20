@@ -3,7 +3,7 @@ from api.users import User
 from globals import logged_user
 
 
-def create_login_page():
+def create_page():
     if logged_user.get("id") is None:
         st.header("Login to Your Account")
 

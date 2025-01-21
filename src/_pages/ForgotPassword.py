@@ -26,4 +26,5 @@ def forgot_password_page():
                 st.error("Erro ao resetar senha. Tente novamente.")
 
     if st.button("Login"):
-        st.experimental_set_query_params(page="login")
+        st.experimental_set_query_params(page="Login")
+        st.rerun()

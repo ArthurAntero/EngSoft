@@ -22,5 +22,5 @@ def profile_page():
             st.rerun()
     else:
         st.warning("Você precisa estar logado para acessar essa página.")
-        st.experimental_set_query_params(page="login")
+        st.experimental_set_query_params(page="Login")
         st.rerun()

@@ -26,13 +26,14 @@ def login_page():
 
                     st.success(f"Bem vindo, {user['name']}!")
                     st.experimental_set_query_params(page="Profile")
-                    st.rerun()
                 else:
                     st.error("Email ou senha inválidas. Tente novamente.")
+                st.rerun()
 
         with col2:
             if st.button("Criar conta"):
                 st.experimental_set_query_params(page="Create account")
+                st.rerun()
 
         with col3:
             if st.button("Esqueci a senha"):
@@ -50,3 +51,4 @@ def login_page():
 
         if st.button("Minha conta"):
             st.experimental_set_query_params(page="profile")
+            st.rerun()

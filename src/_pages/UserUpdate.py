@@ -21,10 +21,10 @@ def edit_profile_page():
             else:
                 st.error("Erro ao atualizar conta. Tente novamente.")
 
-        if st.button("Minha conta"):
-            st.experimental_set_query_params(page="profile")
+        if st.button("Profile"):
+            st.experimental_set_query_params(page="Profile")
             st.rerun()
     else:
         st.warning("Você precisa estar logado para acessar esta página.")
-        st.experimental_set_query_params(page="login")
+        st.experimental_set_query_params(page="Login")
         st.rerun()

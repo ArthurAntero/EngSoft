@@ -17,6 +17,7 @@ def create_restaurant_page():
                 location=location, 
                 description=description, 
                 category=category, 
+                
                 user_id=logged_user["id"]
             )
             
@@ -26,6 +27,7 @@ def create_restaurant_page():
                 st.experimental_rerun()
             else:
                 st.error("There was an error creating the restaurant. Please try again.")
+            st.rerun()
     else:
         st.warning("You need to log in to create a restaurant.")
         st.experimental_set_query_params(page="login")

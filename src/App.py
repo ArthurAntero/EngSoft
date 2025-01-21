@@ -22,14 +22,18 @@ from _pages.EditReviews import edit_reviews_page
 
 user_menu = [
     "Profile",
-    "Create Restaurant",
     "Restaurants",
+    "Create Restaurant",
+    "Reviews",
+    "Create Review"
 ]
 
 user_icons = [
     "house",
+    "list-ul",
     "plus-circle",
     "list-ul",
+    "plus-circle",
 ]
 
 no_logged_menu = [

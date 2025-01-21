@@ -35,7 +35,7 @@ class Review:
             conn = self._db_connect()
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO Review (description, grade, restaurant_id, user_id) VALUES (%s, %s, %s, %s)",
+                'INSERT INTO "Reviews" (description, grade, restaurant_id, user_id) VALUES (%s, %s, %s, %s)',
                 (self.description, self.grade, self.restaurant_id, self.user_id)
             )
             conn.commit()
@@ -46,27 +46,45 @@ class Review:
             return False
         
 
-    def fetch_reviews_by_restaurant_name(self, restaurant_name):
+    def fetch_all_reviews(self):
         try:
             conn = self._db_connect()
             cur = conn.cursor()
-
-            # Busca os reviews com base no nome do restaurante
             cur.execute(
                 """
-                SELECT r.description, r.grade
-                FROM Review r
-                JOIN Restaurants rest ON r.restaurant_id = rest.id
-                WHERE rest.name = %s
-                """,
-                (restaurant_name,)
+                SELECT r.id, r.description, r.grade, u.name AS user_name, res.name AS restaurant_name, r.user_id
+                FROM "Reviews" r
+                JOIN "Restaurants" res ON r.restaurant_id = res.id
+                JOIN "Users" u ON r.user_id = u.id
+                """
             )
             rows = cur.fetchall()
             conn.close()
 
-            # Converte os resultados em uma lista de dicionários
-            reviews = [{"description": row[0], "grade": row[1]} for row in rows]
+            reviews = [
+                {
+                    "id": row[0],
+                    "description": row[1],
+                    "grade": row[2],
+                    "user_name": row[3],
+                    "restaurant_name": row[4],
+                    "user_id": row[5],
+                }
+                for row in rows
+            ]
             return reviews
         except Exception as e:
             print(f"Error fetching reviews: {e}")
             return []
+
+    def delete_review(self, review_id):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+            cur.execute('DELETE FROM "Reviews" WHERE id = %s', (review_id,))
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error deleting review: {e}")
+            return False

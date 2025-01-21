@@ -26,5 +26,8 @@ def signup_page():
             else:
                 st.error("Erro ao criar conta. Tente novamente.")
 
+        st.rerun()
+
     if st.button("Login"):
-        st.experimental_set_query_params(page="login")
+        st.experimental_set_query_params(page="Login")
+        st.rerun()

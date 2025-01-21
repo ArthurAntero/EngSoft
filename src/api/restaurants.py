@@ -37,8 +37,11 @@ class Restaurant:
             conn = self._db_connect()
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO Restaurants (name, location, description, category, user_id) VALUES (%s, %s, %s, %s, %s)",
-                (self.name, self.location, self.description, self.category, self.user_id)
+                """
+                INSERT INTO "Restaurants" (name, location, description, category, total_grade, user_id)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """,
+                (self.name, self.location, self.description, self.category, 0, self.user_id)
             )
             conn.commit()
             conn.close()
@@ -49,30 +52,36 @@ class Restaurant:
 
 
     def fetch_all_restaurants(self):
-        """
-        Busca todos os restaurantes no banco de dados e retorna uma lista de dicionários.
-        """
         try:
             conn = self._db_connect()
             cur = conn.cursor()
-            cur.execute("SELECT name, location, description, category, total_grade FROM Restaurants")
+            cur.execute('SELECT id, name, location, description, category, total_grade FROM "Restaurants" ')
             rows = cur.fetchall()
             conn.close()
 
             restaurants = [
-                {"name": row[0], "location": row[1], "description": row[2], "category": row[3], "total_grade": row[4]}
+                {
+                    "id": row[0],
+                    "name": row[1],
+                    "category": row[2],
+                    "description": row[3],
+                    "location": row[4],
+                    "total_grade": row[5],
+                }
                 for row in rows
             ]
             return restaurants
         except Exception as e:
             print(f"Error fetching restaurants: {e}")
             return []
+
+
         
     def fetch_restaurant_id_by_name(self, name):
         try:
             conn = self._db_connect()
             cur = conn.cursor()
-            cur.execute("SELECT id FROM Restaurants WHERE name = %s", (name,))
+            cur.execute('SELECT id FROM "Restaurants" WHERE name = %s', (name,))
             row = cur.fetchone()
             conn.close()
             return row[0] if row else None

@@ -36,7 +36,7 @@ class Menu:
             conn = self._db_connect()
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO Menu (name, description, menu_photo, restaurant_id, user_id) VALUES (%s, %s, %s, %s, %s)",
+                'INSERT INTO "Menus" (name, description, menu_photo, restaurant_id, user_id) VALUES (%s, %s, %s, %s, %s)',
                 (self.name, self.description, self.menu_photo, self.restaurant_id, self.user_id)
             )
             conn.commit()

@@ -32,7 +32,7 @@ class User:
             conn = self._db_connect()
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO Users (email, name, password) VALUES (%s, %s, %s)",
+                'INSERT INTO "Users" (email, name, password) VALUES (%s, %s, %s)',
                 (self.email, self.name, self.password),
             )
             conn.commit()
@@ -46,7 +46,7 @@ class User:
         try:
             conn = self._db_connect()
             cur = conn.cursor()
-            cur.execute("SELECT * FROM Users WHERE email = %s", (self.email,))
+            cur.execute('SELECT * FROM "Users" WHERE email = %s', (self.email,))
             user = cur.fetchone()
             conn.close()
 
@@ -66,7 +66,7 @@ class User:
             conn = self._db_connect()
             cur = conn.cursor()
             cur.execute(
-                "UPDATE Users SET password = %s WHERE email = %s",
+                'UPDATE "Users" SET password = %s WHERE email = %s',
                 (new_password, self.email),
             )
             conn.commit()
@@ -81,7 +81,7 @@ class User:
             conn = self._db_connect()
             cur = conn.cursor()
             cur.execute(
-                "UPDATE Users SET email = %s, name = %s WHERE id = %s",
+                'UPDATE "Users" SET email = %s, name = %s WHERE id = %s',
                 (self.email, self.name, self.id),
             )
             conn.commit()

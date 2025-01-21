@@ -1,28 +1,38 @@
 import streamlit as st
 from api.reviews import Review
-from globals import logged_user
+from globals import logged_user  # Função para obter o ID do usuário logado.
 
 def list_reviews_page():
-    query_params = st.experimental_get_query_params()
-    restaurant_name = query_params.get("restaurant", [""])[0]
-
     review_model = Review()
+    reviews = review_model.fetch_all_reviews()
+    current_user_id = logged_user["id"]  # Obtém o ID do usuário logado.
 
-    reviews = review_model.fetch_reviews_by_restaurant_name(restaurant_name)
+    st.title("All Reviews")
 
     if not reviews:
         st.info("No reviews found.")
     else:
         for review in reviews:
+            review_id = review.get("id")
             description = review.get("description")
             grade = review.get("grade")
-            st.write(f"**Grade:** {grade:.2f}")
-            st.write(f"**Review:** {description}")
-            st.markdown("---")
+            user_name = review.get("user_name")
+            restaurant_name = review.get("restaurant_name")
+            user_id = review.get("user_id")  # Adicionei o campo `user_id` na consulta.
 
-    st.markdown("---")
-    if logged_user and logged_user.get("id"):
-        if st.button("Create Review"):
-            st.experimental_set_query_params(page="Create Review", restaurant=restaurant_name)
-    else:
-        st.info("You must be logged in to create a review.")
+            with st.container():
+                st.subheader(f"Restaurant: {restaurant_name}")
+                st.write(f"**User:** {user_name}")
+                st.write(f"**Description:** {description}")
+                st.write(f"**Stars:** {grade:.1f}")
+
+                # Verifica se o review pertence ao usuário logado.
+                if user_id == current_user_id:
+                    # Botão para deletar o review.
+                    if st.button("Delete Review", key=f"delete_{review_id}", help="Delete this review"):
+                        if review_model.delete_review(review_id):
+                            st.success("Review deleted successfully!")
+                            st.rerun()
+                        else:
+                            st.error("Failed to delete the review.")
+                st.markdown("---")

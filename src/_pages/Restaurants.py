@@ -24,10 +24,5 @@ def list_restaurants_page():
             st.write(f"**Category:** {category}")
             st.write(f"**Description:** {description}")
             st.write(f"**Location:** {location}")
-            if total_grade:
-                st.write(f"**Stars:** {total_grade:.2f}")
-            else:
-                st.write("**Stars:** -")
-            if st.button(f"See Reviews for {name}", key=name):
-                st.experimental_set_query_params(page="Reviews", restaurant=name)
-            st.markdown("---")
+            st.write(f"**Stars:** {total_grade:.1f}")
+            

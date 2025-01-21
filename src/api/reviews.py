@@ -44,3 +44,29 @@ class Review:
         except Exception as e:
             print(f"Error creating review: {e}")
             return False
+        
+
+    def fetch_reviews_by_restaurant_name(self, restaurant_name):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+
+            # Busca os reviews com base no nome do restaurante
+            cur.execute(
+                """
+                SELECT r.description, r.grade
+                FROM Review r
+                JOIN Restaurants rest ON r.restaurant_id = rest.id
+                WHERE rest.name = %s
+                """,
+                (restaurant_name,)
+            )
+            rows = cur.fetchall()
+            conn.close()
+
+            # Converte os resultados em uma lista de dicionários
+            reviews = [{"description": row[0], "grade": row[1]} for row in rows]
+            return reviews
+        except Exception as e:
+            print(f"Error fetching reviews: {e}")
+            return []

@@ -5,6 +5,11 @@ import io
 from PIL import Image
 
 def list_menus_page():
+
+    if not logged_user or not logged_user.get("id"):
+        st.error("You must be logged in to see Menus.")
+        return
+    
     menu_model = Menu()
     menus = menu_model.fetch_all_menus()
 

@@ -47,10 +47,13 @@ ALTER TABLE "Reviews" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id") ON D
 CREATE OR REPLACE FUNCTION encrypt_password()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.password := md5(NEW.password);
+    IF NEW.password IS DISTINCT FROM OLD.password THEN
+        NEW.password := md5(NEW.password);
+    END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE TRIGGER encrypt_password_trigger
 BEFORE INSERT OR UPDATE ON "Users"

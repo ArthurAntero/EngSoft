@@ -16,19 +16,16 @@ def update_user_page():
     current_name = logged_user["name"]
 
     with st.form(key="update_user_form"):
-        # Campos para atualizar e-mail e nome
         new_email = st.text_input("Email", value=current_email)
         new_name = st.text_input("Name", value=current_name)
 
         submit_button = st.form_submit_button("Update Profile")
 
         if submit_button:
-            # Validar os campos
             if not new_email or not new_name:
                 st.error("Both email and name fields must be filled.")
                 return
 
-            # Atualizar os dados do usuário
             user_model.email = new_email
             user_model.name = new_name
 

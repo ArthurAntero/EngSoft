@@ -13,7 +13,6 @@ def create_review_page():
     restaurant_model = Restaurant()
     review_model = Review()
 
-    # Fetch restaurants
     restaurants = restaurant_model.fetch_all_restaurants()
 
     if not restaurants:

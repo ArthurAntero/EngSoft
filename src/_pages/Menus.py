@@ -30,11 +30,9 @@ def list_menus_page():
 
                 if menu_photo:
                     try:
-                        # Convert memoryview to bytes
                         menu_photo_bytes = bytes(menu_photo)
                         image = Image.open(io.BytesIO(menu_photo_bytes))
 
-                        # Resize for display
                         max_width = 300
                         image.thumbnail((max_width, max_width))
 

@@ -3,6 +3,11 @@ from api.reviews import Review
 from globals import logged_user
 
 def list_reviews_page():
+
+    if not logged_user or not logged_user.get("id"):
+        st.error("You must be logged in to see Reviews.")
+        return
+
     review_model = Review()
     reviews = review_model.fetch_all_reviews()
 

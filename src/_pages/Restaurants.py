@@ -3,6 +3,11 @@ from api.restaurants import Restaurant
 from globals import logged_user
 
 def list_restaurants_page():
+
+    if not logged_user or not logged_user.get("id"):
+        st.error("You must be logged in to see Restaurants.")
+        return
+
     st.header("Restaurants")
     st.markdown("---")
 

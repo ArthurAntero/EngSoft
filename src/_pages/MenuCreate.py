@@ -11,9 +11,8 @@ def create_menu_page():
         user_restaurants = restaurant_model.fetch_restaurants_by_user(logged_user["id"])
 
         if not user_restaurants:
-            st.warning("You need to create a restaurant before adding a menu.")
-            st.experimental_set_query_params(page="Create Restaurant")
-            st.rerun()
+            st.info("You need to create a restaurant before adding a menu.")
+            return
 
         restaurant_options = {restaurant["name"]: restaurant["id"] for restaurant in user_restaurants}
         selected_restaurant = st.selectbox("Select a Restaurant", list(restaurant_options.keys()))

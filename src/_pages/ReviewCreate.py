@@ -13,7 +13,13 @@ def create_review_page():
     restaurant_model = Restaurant()
     review_model = Review()
 
+    # Fetch restaurants
     restaurants = restaurant_model.fetch_all_restaurants()
+
+    if not restaurants:
+        st.info("No restaurants available. Please create a restaurant to add a review.")
+        return
+
     restaurant_names = [restaurant["name"] for restaurant in restaurants]
 
     with st.form(key="create_review_form"):

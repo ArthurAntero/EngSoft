@@ -102,22 +102,30 @@ class Restaurant:
         try:
             conn = self._db_connect()
             cur = conn.cursor()
-            
             cur.execute(
                 """
-                SELECT id, name 
+                SELECT id, name, location, description, category
                 FROM "Restaurants"
                 WHERE user_id = %s
                 """,
                 (user_id,)
             )
             restaurants = cur.fetchall()
-            
             conn.close()
-            return [{"id": row[0], "name": row[1]} for row in restaurants]
+            return [
+                {
+                    "id": row[0],
+                    "name": row[1],
+                    "location": row[2],
+                    "description": row[3],
+                    "category": row[4]
+                }
+                for row in restaurants
+            ]
         except Exception as e:
             print(f"Error fetching restaurants by user: {e}")
             return []
+
         
     def delete_restaurant(self, restaurant_id):
         try:
@@ -144,4 +152,23 @@ class Restaurant:
             return True
         except Exception as e:
             print(f"Error deleting restaurant: {e}")
+            return 
+        
+    def update_restaurant(self):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+            cur.execute(
+                """
+                UPDATE "Restaurants"
+                SET name = %s, location = %s, description = %s, category = %s
+                WHERE id = %s AND user_id = %s
+                """,
+                (self.name, self.location, self.description, self.category, self.id, logged_user["id"]),
+            )
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error updating restaurant: {e}")
             return False

@@ -14,24 +14,33 @@ from _pages.Reviews import list_reviews_page
 from _pages.RestaurantCreate import create_restaurant_page
 from _pages.MenuCreate import create_menu_page
 from _pages.ReviewCreate import create_review_page
+from _pages.RestaurantUpdate import update_restaurant_page
+from _pages.ReviewUpdate import update_review_page
+from _pages.UserUpdate import update_user_page
 
 
 user_menu = [
     "Profile",
+    "Update Profile",
     "Restaurants",
     "Create Restaurant",
+    "Update Restaurant",
     "Reviews",
     "Create Review",
+    "Update Review",
     "Menus",
     "Create Menu"
 ]
 
 user_icons = [
     "house",
+    "pencil",
     "list-ul",
     "plus-circle",
+    "pencil",
     "list-ul",
     "plus-circle",
+    "pencil",
     "list-ul",
     "plus-circle",
 ]
@@ -85,11 +94,14 @@ with st.sidebar:
     )
     
     st.experimental_set_query_params(page=selected)
+    page = selected
 
 if page == "Login":
     login_page()
 elif page == "Create account":
     signup_page()
+elif page == "Update Profile":
+    update_user_page()
 elif page == "Forgot password":
     forgot_password_page()
 elif page == "Profile":
@@ -106,5 +118,9 @@ elif page == "Create Menu":
     create_menu_page()
 elif page == "Create Review":
     create_review_page()
+elif page == "Update Restaurant":
+    update_restaurant_page()
+elif page == "Update Review":
+    update_review_page()
 else:
     st.error("Page not found.")

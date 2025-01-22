@@ -1,5 +1,6 @@
 import psycopg2
 from decouple import config
+from globals import logged_user
 
 POSTGRES_DB = config('POSTGRES_DB')
 POSTGRES_USER = config('POSTGRES_USER')
@@ -111,5 +112,24 @@ class Review:
             return True
         except Exception as e:
             print(f"Error deleting review: {e}")
+            return False
+
+    def update_review(self):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+            cur.execute(
+                """
+                UPDATE "Reviews"
+                SET description = %s, grade = %s
+                WHERE id = %s AND user_id = %s
+                """,
+                (self.description, self.grade, self.id, logged_user["id"]),
+            )
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error updating review: {e}")
             return False
 

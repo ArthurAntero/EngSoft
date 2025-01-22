@@ -3,24 +3,24 @@ from api.users import User
 
 
 def forgot_password_page():
-    st.header("Esqueceu a senha")
+    st.header("Forgot Password")
 
     email = st.text_input("Email", placeholder="Email")
     new_password = st.text_input(
-        "NNova senha", type="password", placeholder="Nova senha"
+        "New Password", type="password", placeholder="New Password"
     )
     confirm_new_password = st.text_input(
-        "Confirmar nova senha", type="password", placeholder="Confirme nova senha"
+        "Confirm New Password", type="password", placeholder="Confirm New Password"
     )
 
-    if st.button("Resetar senha"):
+    if st.button("Reset Password"):
         if not email or not new_password or not confirm_new_password:
-            st.error("Preencha todos os campos.")
+            st.error("Please fill in all fields.")
         elif new_password != confirm_new_password:
-            st.error("Coloque a mesma senha nos campos.")
+            st.error("Passwords do not match.")
         else:
             user_instance = User(email=email)
             if user_instance.reset_password(new_password=new_password):
-                st.success("Senha resetada com sucesso!")
+                st.success("Password reset successfully!")
             else:
-                st.error("Erro ao resetar senha. Tente novamente.")
+                st.error("Error resetting password. Please try again.")

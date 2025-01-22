@@ -3,28 +3,28 @@ from api.users import User
 
 
 def signup_page():
-    st.header("Criar nova conta")
+    st.header("Create a new account")
 
     email = st.text_input("Email", placeholder="Email")
-    name = st.text_input("Nome", placeholder="Nome")
+    name = st.text_input("Name", placeholder="Name")
     password = st.text_input(
-        "Senha", type="password", placeholder="Senha"
+        "Password", type="password", placeholder="Password"
     )
     confirm_password = st.text_input(
-        "Confirmar Senha", type="password", placeholder="Confirme a senha"
+        "Confirm Password", type="password", placeholder="Confirm your password"
     )
 
-    if st.button("Criar"):
+    if st.button("Sign up"):
         if not email or not name or not password or not confirm_password:
-            st.error("Preecha todas os campos.")
+            st.error("Please fill in all fields.")
         elif password != confirm_password:
-            st.error("Coloque a mesma senha nos campos.")
+            st.error("Passwords do not match.")
         else:
             user_instance = User(email=email, name=name, password=password)
             if user_instance.create_user():
-                st.success("Conta criada com sucesso.")
+                st.success("Account successfully created.")
             else:
-                st.error("Erro ao criar conta. Tente novamente.")
+                st.error("Error creating account. Please try again.")
 
         st.rerun()
 

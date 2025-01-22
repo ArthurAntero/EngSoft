@@ -24,11 +24,11 @@ def create_restaurant_page():
             if restaurant_instance.create_restaurant(logged_user["id"]):
                 st.success("Restaurant created successfully!")
                 st.experimental_set_query_params(page="Restaurants")
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.error("There was an error creating the restaurant. Please try again.")
             st.rerun()
     else:
         st.warning("You need to log in to create a restaurant.")
         st.experimental_set_query_params(page="login")
-        st.experimental_rerun()
+        st.rerun()

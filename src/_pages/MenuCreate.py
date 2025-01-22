@@ -13,7 +13,7 @@ def create_menu_page():
         if not user_restaurants:
             st.warning("You need to create a restaurant before adding a menu.")
             st.experimental_set_query_params(page="Create Restaurant")
-            st.experimental_rerun()
+            st.rerun()
 
         restaurant_options = {restaurant["name"]: restaurant["id"] for restaurant in user_restaurants}
         selected_restaurant = st.selectbox("Select a Restaurant", list(restaurant_options.keys()))
@@ -39,7 +39,7 @@ def create_menu_page():
                 if menu_instance.create_menu():
                     st.success("Menu created successfully!")
                     st.experimental_set_query_params(page="Menus")
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error("There was an error creating the menu. Please try again.")
             else:
@@ -47,4 +47,4 @@ def create_menu_page():
     else:
         st.warning("You need to log in to create a menu.")
         st.experimental_set_query_params(page="login")
-        st.experimental_rerun()
+        st.rerun()

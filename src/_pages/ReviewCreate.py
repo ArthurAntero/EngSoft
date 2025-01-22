@@ -41,5 +41,7 @@ def create_review_page():
 
         if review_model.create_review(logged_user["id"]):
             st.success("Review created successfully!")
+            st.experimental_set_query_params(page="Reviews")
+            st.rerun()
         else:
             st.error("Failed to create review.")

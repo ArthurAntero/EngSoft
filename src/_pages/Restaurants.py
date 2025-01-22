@@ -32,7 +32,7 @@ def list_restaurants_page():
                 if st.button(f"Delete {name}", key=f"delete_{restaurant_id}"):
                     if restaurant_model.delete_restaurant(restaurant_id):
                         st.success(f"Restaurant '{name}' deleted successfully.")
-                        st.experimental_rerun()
+                        st.rerun()
                     else:
                         st.error(f"Failed to delete restaurant '{name}'.")
         st.markdown("---")

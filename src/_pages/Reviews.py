@@ -17,7 +17,7 @@ def list_reviews_page():
             grade = review.get("grade")
             user_name = review.get("user_name")
             restaurant_name = review.get("restaurant_name")
-            user_id = review.get("user_id")  # Adicionei o campo `user_id` na consulta.
+            user_id = review.get("user_id")
 
             with st.container():
                 st.subheader(f"Restaurant: {restaurant_name}")

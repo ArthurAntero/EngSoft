@@ -1,28 +1,30 @@
 import streamlit as st
+import time
 from api.users import User
 
 
 def forgot_password_page():
-    st.header("Forgot Password")
+    st.header("Esqueci a senha")
 
     email = st.text_input("Email", placeholder="Email")
     new_password = st.text_input(
-        "New Password", type="password", placeholder="New Password"
+        "Nova Senha", type="password", placeholder="Nova Senha"
     )
     confirm_new_password = st.text_input(
-        "Confirm New Password", type="password", placeholder="Confirm New Password"
+        "Confirme Nova Senha", type="password", placeholder="Confirme Nova Senha"
     )
 
-    if st.button("Reset Password"):
+    if st.button("Redefinir senha"):
         if not email or not new_password or not confirm_new_password:
-            st.error("Please fill in all fields.")
+            st.error("Por favor, preencha todos os campos.")
         elif new_password != confirm_new_password:
-            st.error("Passwords do not match.")
+            st.error("As senhas não são iguais.")
         else:
             user_instance = User(email=email)
             if user_instance.reset_password(new_password=new_password):
-                st.success("Password reset successfully!")
+                st.success("Senha redefinida com sucesso!")
+                time.sleep(2)
                 st.experimental_set_query_params(page="Login")
                 st.rerun()
             else:
-                st.error("Error resetting password. Please try again.")
+                st.error("Erro redefinindo senha. Por favor, tente novamente.")

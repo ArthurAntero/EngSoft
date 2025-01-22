@@ -20,16 +20,16 @@ from _pages.UserUpdate import update_user_page
 
 
 user_menu = [
-    "Profile",
-    "Update Profile",
-    "Restaurants",
-    "Create Restaurant",
-    "Update Restaurant",
-    "Reviews",
-    "Create Review",
-    "Update Review",
+    "Perfil",
+    "Editar Perfil",
+    "Restaurantes",
+    "Criar Restaurante",
+    "Editar Restaurante",
+    "Avaliações",
+    "Criar Avaliação",
+    "Editar Avaliação",
     "Menus",
-    "Create Menu"
+    "Criar Menu"
 ]
 
 user_icons = [
@@ -47,8 +47,8 @@ user_icons = [
 
 no_logged_menu = [
     "Login",
-    "Create account",
-    "Forgot password",
+    "Criar conta",
+    "Esqueci a senha",
 ]
 
 no_logged_icons = [
@@ -100,29 +100,29 @@ with st.sidebar:
 
 if page == "Login":
     login_page()
-elif page == "Create account":
+elif page == "Criar conta":
     signup_page()
-elif page == "Update Profile":
+elif page == "Editar Perfil":
     update_user_page()
-elif page == "Forgot password":
+elif page == "Esqueci a senha":
     forgot_password_page()
-elif page == "Profile":
+elif page == "Perfil":
     profile_page()
-elif page == "Restaurants":
+elif page == "Restaurantes":
     list_restaurants_page()
 elif page == "Menus":
     list_menus_page()
-elif page == "Reviews":
+elif page == "Avaliações":
     list_reviews_page()
-elif page == "Create Restaurant":
+elif page == "Criar Restaurante":
     create_restaurant_page()
-elif page == "Create Menu":
+elif page == "Criar Menu":
     create_menu_page()
-elif page == "Create Review":
+elif page == "Criar Avaliação":
     create_review_page()
-elif page == "Update Restaurant":
+elif page == "Editar Restaurante":
     update_restaurant_page()
-elif page == "Update Review":
+elif page == "Editar Avaliação":
     update_review_page()
 else:
     st.error("Page not found.")

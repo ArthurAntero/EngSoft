@@ -8,16 +8,12 @@ from _pages.Login import login_page
 from _pages.UserCreate import signup_page
 from _pages.ForgotPassword import forgot_password_page
 from _pages.Profile import profile_page
-from _pages.UserUpdate import edit_profile_page
 from _pages.Restaurants import list_restaurants_page
-from _pages.ListMenus import list_menus_page
+from _pages.Menus import list_menus_page
 from _pages.Reviews import list_reviews_page
 from _pages.RestaurantCreate import create_restaurant_page
-from _pages.AddMenus import add_menus_page
+from _pages.MenuCreate import create_menu_page
 from _pages.ReviewCreate import create_review_page
-from _pages.EditRestaurants import edit_restaurants_page
-from _pages.EditMenus import edit_menus_page
-from _pages.EditReviews import edit_reviews_page
 
 
 user_menu = [
@@ -25,11 +21,15 @@ user_menu = [
     "Restaurants",
     "Create Restaurant",
     "Reviews",
-    "Create Review"
+    "Create Review",
+    "Menus",
+    "Create Menu"
 ]
 
 user_icons = [
     "house",
+    "list-ul",
+    "plus-circle",
     "list-ul",
     "plus-circle",
     "list-ul",
@@ -94,25 +94,17 @@ elif page == "Forgot password":
     forgot_password_page()
 elif page == "Profile":
     profile_page()
-elif page == "edit_profile":
-    edit_profile_page()
 elif page == "Restaurants":
     list_restaurants_page()
-elif page == "List Menus":
+elif page == "Menus":
     list_menus_page()
 elif page == "Reviews":
     list_reviews_page()
 elif page == "Create Restaurant":
     create_restaurant_page()
-elif page == "Add Menus":
-    add_menus_page()
+elif page == "Create Menu":
+    create_menu_page()
 elif page == "Create Review":
     create_review_page()
-elif page == "Edit Restaurants":
-    edit_restaurants_page()
-elif page == "Edit Menus":
-    edit_menus_page()
-elif page == "Edit Reviews":
-    edit_reviews_page()
 else:
     st.error("Page not found.")

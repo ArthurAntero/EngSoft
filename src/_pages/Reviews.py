@@ -1,11 +1,10 @@
 import streamlit as st
 from api.reviews import Review
-from globals import logged_user  # Função para obter o ID do usuário logado.
+from globals import logged_user
 
 def list_reviews_page():
     review_model = Review()
     reviews = review_model.fetch_all_reviews()
-    current_user_id = logged_user["id"]  # Obtém o ID do usuário logado.
 
     st.title("All Reviews")
 
@@ -26,9 +25,7 @@ def list_reviews_page():
                 st.write(f"**Description:** {description}")
                 st.write(f"**Stars:** {grade:.1f}")
 
-                # Verifica se o review pertence ao usuário logado.
-                if user_id == current_user_id:
-                    # Botão para deletar o review.
+                if user_id == logged_user["id"]:
                     if st.button("Delete Review", key=f"delete_{review_id}", help="Delete this review"):
                         if review_model.delete_review(review_id):
                             st.success("Review deleted successfully!")

@@ -28,6 +28,3 @@ def signup_page():
 
         st.rerun()
 
-    if st.button("Login"):
-        st.experimental_set_query_params(page="Login")
-        st.rerun()

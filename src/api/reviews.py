@@ -81,10 +81,35 @@ class Review:
         try:
             conn = self._db_connect()
             cur = conn.cursor()
+
+            cur.execute('SELECT restaurant_id FROM "Reviews" WHERE id = %s', (review_id,))
+            result = cur.fetchone()
+
+            if not result:
+                print(f"Review with ID {review_id} not found.")
+                return False
+
+            restaurant_id = result[0]
+
             cur.execute('DELETE FROM "Reviews" WHERE id = %s', (review_id,))
+            
+            cur.execute(
+                """
+                UPDATE "Restaurants"
+                SET total_grade = (
+                    SELECT COALESCE(AVG(grade), 0)
+                    FROM "Reviews"
+                    WHERE restaurant_id = %s
+                )
+                WHERE id = %s
+                """,
+                (restaurant_id, restaurant_id)
+            )
+
             conn.commit()
             conn.close()
             return True
         except Exception as e:
             print(f"Error deleting review: {e}")
             return False
+

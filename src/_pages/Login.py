@@ -12,43 +12,20 @@ def login_page():
             "Senha", type="password", placeholder="Senha"
         )
 
-        col1, col2, col3 = st.columns([1, 1, 1])
 
-        with col1:
-            if st.button("Login"):
-                user_instance = User(email=email, password=password)
-                user = user_instance.authenticate_user()
+        
+        if st.button("Login"):
+            user_instance = User(email=email, password=password)
+            user = user_instance.authenticate_user()
 
-                if user:
-                    logged_user["id"] = user["id"]
-                    logged_user["name"] = user["name"]
-                    logged_user["email"] = user["email"]
-
-                    st.success(f"Bem vindo, {user['name']}!")
-                    st.experimental_set_query_params(page="Profile")
-                else:
-                    st.error("Email ou senha inválidas. Tente novamente.")
-                st.rerun()
-
-        with col2:
-            if st.button("Criar conta"):
-                st.experimental_set_query_params(page="Create account")
-                st.rerun()
-
-        with col3:
-            if st.button("Esqueci a senha"):
-                st.experimental_set_query_params(page="Forgot password")
+            if user:
+                logged_user["id"] = user["id"]
+                logged_user["name"] = user["name"]
+                logged_user["email"] = user["email"]
+                st.success(f"Bem vindo, {user['name']}!")
+                st.experimental_set_query_params(page="Profile")
+            else:
+                st.error("Email ou senha inválidas. Tente novamente.")
+            st.rerun()
     else:
-        st.write(f"Bem vindo de volta, {logged_user['name']}!")
-
-        if st.button("Logout"):
-            logged_user["id"] = None
-            logged_user["name"] = None
-            logged_user["email"] = None
-
-            st.experimental_set_query_params(page="Login")  # Volta à página de login
-            st.rerun()
-
-        if st.button("Minha conta"):
-            st.experimental_set_query_params(page="profile")
-            st.rerun()
+        st.write("")

@@ -18,7 +18,7 @@ def profile_page():
             logged_user["email"] = None
 
             st.success("Você foi deslogado.")
-            st.experimental_set_query_params(page="login")
+            st.experimental_set_query_params(page="Login")
             st.rerun()
     else:
         st.warning("Você precisa estar logado para acessar essa página.")

@@ -21,12 +21,11 @@ CREATE TABLE IF NOT EXISTS "Restaurants" (
 ALTER TABLE "Restaurants" ALTER COLUMN total_grade SET DEFAULT 0;
 ALTER TABLE "Restaurants" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id") ON DELETE CASCADE;
 
--- Criação da tabela "Menus"
 CREATE TABLE IF NOT EXISTS "Menus" (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     description VARCHAR NOT NULL,
-    menu_photo VARCHAR,
+    menu_photo BYTEA,
     restaurant_id INTEGER,
     user_id INTEGER
 );
@@ -34,7 +33,6 @@ CREATE TABLE IF NOT EXISTS "Menus" (
 ALTER TABLE "Menus" ADD FOREIGN KEY ("restaurant_id") REFERENCES "Restaurants" ("id") ON DELETE CASCADE;
 ALTER TABLE "Menus" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id") ON DELETE CASCADE;
 
--- Criação da tabela "Reviews"
 CREATE TABLE IF NOT EXISTS "Reviews" (
     id SERIAL PRIMARY KEY,
     description VARCHAR NOT NULL,
@@ -46,7 +44,6 @@ CREATE TABLE IF NOT EXISTS "Reviews" (
 ALTER TABLE "Reviews" ADD FOREIGN KEY ("restaurant_id") REFERENCES "Restaurants" ("id") ON DELETE CASCADE;
 ALTER TABLE "Reviews" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id") ON DELETE CASCADE;
 
--- Função para encriptar a senha dos usuários
 CREATE OR REPLACE FUNCTION encrypt_password()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -60,7 +57,6 @@ BEFORE INSERT OR UPDATE ON "Users"
 FOR EACH ROW
 EXECUTE FUNCTION encrypt_password();
 
--- Função para atualizar a nota total do restaurante
 CREATE OR REPLACE FUNCTION update_total_grade()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -76,7 +72,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Triggers para atualizar a nota total do restaurante
 CREATE TRIGGER trigger_update_total_grade_insert
 AFTER INSERT ON "Reviews"
 FOR EACH ROW

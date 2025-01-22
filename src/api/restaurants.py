@@ -1,5 +1,6 @@
 import psycopg2
 from decouple import config
+from globals import logged_user
 
 POSTGRES_DB = config("POSTGRES_DB")
 POSTGRES_USER = config("POSTGRES_USER")
@@ -55,7 +56,12 @@ class Restaurant:
         try:
             conn = self._db_connect()
             cur = conn.cursor()
-            cur.execute('SELECT id, name, location, description, category, total_grade FROM "Restaurants" ')
+            cur.execute(
+                """
+                SELECT id, name, location, description, category, total_grade, user_id
+                FROM "Restaurants"
+                """
+            )
             rows = cur.fetchall()
             conn.close()
 
@@ -63,10 +69,11 @@ class Restaurant:
                 {
                     "id": row[0],
                     "name": row[1],
-                    "category": row[2],
+                    "location": row[2],
                     "description": row[3],
-                    "location": row[4],
+                    "category": row[4],
                     "total_grade": row[5],
+                    "user_id": row[6],
                 }
                 for row in rows
             ]
@@ -74,6 +81,7 @@ class Restaurant:
         except Exception as e:
             print(f"Error fetching restaurants: {e}")
             return []
+
 
 
         
@@ -88,3 +96,52 @@ class Restaurant:
         except Exception as e:
             print(f"Error fetching restaurant ID: {e}")
             return None
+
+
+    def fetch_restaurants_by_user(self, user_id):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+            
+            cur.execute(
+                """
+                SELECT id, name 
+                FROM "Restaurants"
+                WHERE user_id = %s
+                """,
+                (user_id,)
+            )
+            restaurants = cur.fetchall()
+            
+            conn.close()
+            return [{"id": row[0], "name": row[1]} for row in restaurants]
+        except Exception as e:
+            print(f"Error fetching restaurants by user: {e}")
+            return []
+        
+    def delete_restaurant(self, restaurant_id):
+        try:
+            conn = self._db_connect()
+            cur = conn.cursor()
+
+            cur.execute('SELECT user_id FROM "Restaurants" WHERE id = %s', (restaurant_id,))
+            result = cur.fetchone()
+
+            if not result:
+                print("Restaurant not found.")
+                conn.close()
+                return False
+
+            user_id = result[0]
+            if user_id != logged_user["id"]:
+                print("You do not have permission to delete this restaurant.")
+                conn.close()
+                return False
+
+            cur.execute('DELETE FROM "Restaurants" WHERE id = %s', (restaurant_id,))
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error deleting restaurant: {e}")
+            return False

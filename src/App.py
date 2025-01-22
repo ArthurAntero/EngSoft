@@ -76,7 +76,7 @@ query_params = st.experimental_get_query_params()
 page = query_params.get("page", ["Login"])[0]
 
 with st.sidebar:
-    st.write("# BiteCritic")
+    st.write("# BiteCritique")
 
     selected = option_menu(
         menu_title=None,
@@ -93,8 +93,10 @@ with st.sidebar:
         },
     )
     
-    st.experimental_set_query_params(page=selected)
-    page = selected
+    # Atualizar o parâmetro de página na URL e recarregar
+    if selected != page:
+        st.experimental_set_query_params(page=selected)
+        st.experimental_rerun()
 
 if page == "Login":
     login_page()

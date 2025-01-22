@@ -23,6 +23,8 @@ def signup_page():
             user_instance = User(email=email, name=name, password=password)
             if user_instance.create_user():
                 st.success("Account successfully created.")
+                st.experimental_set_query_params(page="Login")
+                st.rerun()
             else:
                 st.error("Error creating account. Please try again.")
 

@@ -22,5 +22,7 @@ def forgot_password_page():
             user_instance = User(email=email)
             if user_instance.reset_password(new_password=new_password):
                 st.success("Password reset successfully!")
+                st.experimental_set_query_params(page="Login")
+                st.rerun()
             else:
                 st.error("Error resetting password. Please try again.")

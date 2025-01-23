@@ -17,6 +17,7 @@ from _pages.ReviewCreate import create_review_page
 from _pages.RestaurantUpdate import update_restaurant_page
 from _pages.ReviewUpdate import update_review_page
 from _pages.UserUpdate import update_user_page
+from _pages.MenuUpdate import update_menu_page
 
 
 user_menu = [
@@ -29,7 +30,8 @@ user_menu = [
     "Criar Avaliação",
     "Editar Avaliação",
     "Menus",
-    "Criar Menu"
+    "Create Menu",
+    "Update Menu",
 ]
 
 user_icons = [
@@ -43,6 +45,7 @@ user_icons = [
     "pencil",
     "list-ul",
     "plus-circle",
+    "pencil",
 ]
 
 no_logged_menu = [
@@ -93,10 +96,8 @@ with st.sidebar:
         },
     )
     
-    # Atualizar o parâmetro de página na URL e recarregar
-    if selected != page:
-        st.experimental_set_query_params(page=selected)
-        st.experimental_rerun()
+    st.experimental_set_query_params(page=selected)
+    page = selected
 
 if page == "Login":
     login_page()
@@ -124,5 +125,7 @@ elif page == "Editar Restaurante":
     update_restaurant_page()
 elif page == "Editar Avaliação":
     update_review_page()
+elif page == "Update Menu":
+    update_menu_page()
 else:
     st.error("Page not found.")

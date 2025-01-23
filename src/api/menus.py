@@ -33,7 +33,7 @@ class Menu:
             cur = conn.cursor()
             
             cur.execute("""
-                SELECT m.id, m.name, m.description, m.menu_photo, r.name AS restaurant_name, m.user_id
+                SELECT m.id, m.name, m.description, m.menu_photo, m.restaurant_id, r.name AS restaurant_name, m.user_id
                 FROM "Menus" m
                 JOIN "Restaurants" r ON m.restaurant_id = r.id
             """)
@@ -46,8 +46,9 @@ class Menu:
                     "name": row[1],
                     "description": row[2],
                     "menu_photo": row[3],
-                    "restaurant_name": row[4],
-                    "user_id": row[5]
+                    "restaurant_id": row[4],  # Incluindo o campo restaurant_id
+                    "restaurant_name": row[5],
+                    "user_id": row[6]
                 })
             
             conn.close()
@@ -55,6 +56,7 @@ class Menu:
         except Exception as e:
             print(f"Error fetching menus: {e}")
             return []
+
         
     def create_menu(self):
         if not all([self.name, self.description, self.restaurant_id, self.user_id]):

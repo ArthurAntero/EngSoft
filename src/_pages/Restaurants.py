@@ -1,22 +1,21 @@
 import streamlit as st
-import time
 from api.restaurants import Restaurant
 from globals import logged_user
 
 def list_restaurants_page():
 
     if not logged_user or not logged_user.get("id"):
-        st.error("Você precisa estar logado para visualizar os restaurantes.")
+        st.error("You must be logged in to see Restaurants.")
         return
 
-    st.header("Restaurantes")
+    st.header("Restaurants")
     st.markdown("---")
 
     restaurant_model = Restaurant()
     restaurants = restaurant_model.fetch_all_restaurants()
 
     if not restaurants:
-        st.info("Nenhum restaurante encontrado.")
+        st.info("No restaurants found.")
         return
 
     for restaurant in restaurants:
@@ -29,17 +28,17 @@ def list_restaurants_page():
 
         with st.container():
             st.subheader(name)
-            st.write(f"**Categoria:** {category}")
-            st.write(f"**Descrição:** {description}")
-            st.write(f"**Localização:** {location}")
-            st.write(f"**Avaliação:** {total_grade:.1f} estrelas")
+            st.write(f"**Category:** {category}")
+            st.write(f"**Description:** {description}")
+            st.write(f"**Location:** {location}")
+            st.write(f"**Stars:** {total_grade:.1f}")
 
             if restaurant.get("user_id") == logged_user["id"]:
-                if st.button(f"Excluir {name}", key=f"delete_{restaurant_id}"):
+                if st.button(f"Delete {name}", key=f"delete_{restaurant_id}"):
                     if restaurant_model.delete_restaurant(restaurant_id):
-                        st.success(f"Restaurante '{name}' excluído com sucesso.")
-                        time.sleep(2)
+                        st.success(f"Restaurant '{name}' deleted successfully.")
                         st.rerun()
                     else:
-                        st.error(f"Falha ao excluir o restaurante '{name}'.")
+                        st.error(f"Failed to delete restaurant '{name}'.")
         st.markdown("---")
+

@@ -1,58 +1,59 @@
 import streamlit as st
+from api.reviews import Review
 from api.restaurants import Restaurant
 from globals import logged_user
 
-
-def update_restaurant_page():
+def update_review_page():
     if not logged_user or not logged_user.get("id"):
-        st.error("You must be logged in to update a restaurant.")
+        st.error("You must be logged in to update a review.")
         return
 
-    st.title("Update a Restaurant")
+    st.title("Update a Review")
 
-    restaurant_model = Restaurant()
-    user_restaurants = restaurant_model.fetch_restaurants_by_user(logged_user["id"])
+    review_model = Review()
+    user_reviews = [
+        review for review in review_model.fetch_all_reviews()
+        if review["user_id"] == logged_user["id"]
+    ]
 
-    if not user_restaurants:
-        st.info("You have no restaurants to update.")
+    if not user_reviews:
+        st.info("You have no reviews to update.")
         return
 
-    restaurant_names = [restaurant["name"] for restaurant in user_restaurants]
-    selected_restaurant_name = st.selectbox(
-        "Select a restaurant to update", options=["Select a restaurant"] + restaurant_names
+    review_options = ["Select a review"] + [
+        f"{review['restaurant_name']} - {review['description'][:30]}..."
+        for review in user_reviews
+    ]
+    selected_review_index = st.selectbox(
+        "Select a review to update", options=list(range(len(review_options))), 
+        format_func=lambda x: review_options[x]
     )
 
-    selected_restaurant = None
-    if selected_restaurant_name != "Select a restaurant":
-        selected_restaurant = next(
-            (restaurant for restaurant in user_restaurants if restaurant["name"] == selected_restaurant_name), None
-        )
+    selected_review = (
+        user_reviews[selected_review_index - 1] if selected_review_index > 0 else None
+    )
 
-    if selected_restaurant:
-        with st.form(key="update_restaurant_form"):
-            name = st.text_input("Restaurant Name", value=selected_restaurant["name"])
-            location = st.text_input("Location", value=selected_restaurant["location"])
-            description = st.text_area("Description", value=selected_restaurant["description"])
-            category = st.text_input("Category", value=selected_restaurant["category"])
+    if selected_review:
+        with st.form(key="update_review_form"):
+            description = st.text_area("Review Description", value=selected_review["description"], max_chars=500)
+            grade = st.slider("Grade", min_value=0.0, max_value=5.0, step=0.1, value=selected_review["grade"])
 
-            submit_button = st.form_submit_button("Update Restaurant")
+            submit_button = st.form_submit_button("Update Review")
 
             if submit_button:
-                if not name or not location or not description or not category:
-                    st.error("All fields must be filled.")
+                if not description:
+                    st.error("Description must be filled.")
                     return
 
-                restaurant_model.id = selected_restaurant["id"]
-                restaurant_model.name = name
-                restaurant_model.location = location
-                restaurant_model.description = description
-                restaurant_model.category = category
+                review_model.id = selected_review["id"]
+                review_model.description = description
+                review_model.grade = grade
 
-                if restaurant_model.update_restaurant():
-                    st.success("Restaurant updated successfully!")
-                    st.experimental_set_query_params(page="Restaurants")
+                if review_model.update_review():
+                    st.success("Review updated successfully!")
+                    st.experimental_set_query_params(page="Reviews")
                     st.rerun()
                 else:
-                    st.error("Failed to update the restaurant.")
+                    st.error("Failed to update the review.")
     else:
-        st.info("Please select a restaurant to edit.")
+        st.info("Please select a review to edit.")

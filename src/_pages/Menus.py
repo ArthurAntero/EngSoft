@@ -1,5 +1,4 @@
 import streamlit as st
-import time
 from api.menus import Menu
 from globals import logged_user
 import io
@@ -8,18 +7,18 @@ from PIL import Image
 def list_menus_page():
 
     if not logged_user or not logged_user.get("id"):
-        st.error("Você precisa estar logado para visualizar os menus.")
+        st.error("You must be logged in to see Menus.")
         return
     
     menu_model = Menu()
     menus = menu_model.fetch_all_menus()
 
-    st.title("Todos os Menus")
+    st.title("All Menus")
 
     st.markdown("---")
 
     if not menus:
-        st.info("Nenhum menu encontrado.")
+        st.info("No menus found.")
     else:
         for menu in menus:
             menu_id = menu.get("id")
@@ -30,9 +29,9 @@ def list_menus_page():
             user_id = menu.get("user_id")
 
             with st.container():
-                st.write(f"Restaurante: {restaurant_name}")
-                st.write(f"**Nome:** {name}")
-                st.write(f"**Descrição:** {description}")
+                st.write(f"Restaurant: {restaurant_name}")
+                st.write(f"**Name:** {name}")
+                st.write(f"**Description:** {description}")
 
                 if menu_photo:
                     try:
@@ -44,17 +43,16 @@ def list_menus_page():
 
                         st.image(image, use_column_width=False)
                     except Exception as e:
-                        st.error(f"Erro ao exibir a imagem: {e}")
+                        st.error(f"Error displaying image: {e}")
                 else:
-                    st.write("Nenhuma imagem disponível.")
+                    st.write("No image available.")
 
                 if user_id == logged_user["id"]:
-                    if st.button("Excluir Menu", key=f"delete_{menu_id}", help="Excluir este menu"):
+                    if st.button("Delete Menu", key=f"delete_{menu_id}", help="Delete this menu"):
                         if menu_model.delete_menu(menu_id):
-                            st.success("Menu excluído com sucesso!")
-                            time.sleep(2)
+                            st.success("Menu deleted successfully!")
                             st.rerun()
                         else:
-                            st.error("Falha ao excluir o menu.")
+                            st.error("Failed to delete the menu.")
 
                 st.markdown("---")

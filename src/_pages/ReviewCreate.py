@@ -1,4 +1,3 @@
-import time
 import streamlit as st
 from api.reviews import Review
 from api.restaurants import Restaurant
@@ -6,10 +5,10 @@ from globals import logged_user
 
 def create_review_page():
     if not logged_user or not logged_user.get("id"):
-        st.error("Você precisa estar logado para criar uma avaliação.")
+        st.error("You must be logged in to create a review.")
         return
 
-    st.title("Criar uma Avaliação")
+    st.title("Create a Review")
 
     restaurant_model = Restaurant()
     review_model = Review()
@@ -17,27 +16,27 @@ def create_review_page():
     restaurants = restaurant_model.fetch_all_restaurants()
 
     if not restaurants:
-        st.info("Nenhum restaurante disponível. Por favor, crie um restaurante para adicionar uma avaliação.")
+        st.info("No restaurants available. Please create a restaurant to add a review.")
         return
 
     restaurant_names = [restaurant["name"] for restaurant in restaurants]
 
     with st.form(key="create_review_form"):
-        description = st.text_area("Descrição da Avaliação", max_chars=500)
-        grade = st.slider("Nota", min_value=0.0, max_value=5.0, step=0.1)
-        restaurant_name = st.selectbox("Selecione um Restaurante", options=restaurant_names)
+        description = st.text_area("Review Description", max_chars=500)
+        grade = st.slider("Grade", min_value=0.0, max_value=5.0, step=0.1)
+        restaurant_name = st.selectbox("Select a Restaurant", options=restaurant_names)
 
-        submit_button = st.form_submit_button("Enviar Avaliação")
+        submit_button = st.form_submit_button("Submit Review")
 
     if submit_button:
         if not description or not restaurant_name:
-            st.error("Todos os campos devem ser preenchidos.")
+            st.error("All fields must be filled.")
             return
 
         restaurant_id = restaurant_model.fetch_restaurant_id_by_name(restaurant_name)
 
         if not restaurant_id:
-            st.error("Erro ao encontrar o restaurante selecionado.")
+            st.error("Error finding the selected restaurant.")
             return
 
         review_model.description = description
@@ -46,9 +45,8 @@ def create_review_page():
         review_model.user_id = logged_user["id"]
 
         if review_model.create_review(logged_user["id"]):
-            st.success("Avaliação criada com sucesso!")
-            time.sleep(1)
+            st.success("Review created successfully!")
             st.experimental_set_query_params(page="Reviews")
             st.rerun()
         else:
-            st.error("Falha ao criar a avaliação.")
+            st.error("Failed to create review.")

@@ -21,14 +21,14 @@ from _pages.MenuUpdate import update_menu_page
 
 
 user_menu = [
-    "Perfil",
-    "Editar Perfil",
-    "Restaurantes",
-    "Criar Restaurante",
-    "Editar Restaurante",
-    "Avaliações",
-    "Criar Avaliação",
-    "Editar Avaliação",
+    "Profile",
+    "Update Profile",
+    "Restaurants",
+    "Create Restaurant",
+    "Update Restaurant",
+    "Reviews",
+    "Create Review",
+    "Update Review",
     "Menus",
     "Create Menu",
     "Update Menu",
@@ -50,8 +50,8 @@ user_icons = [
 
 no_logged_menu = [
     "Login",
-    "Criar conta",
-    "Esqueci a senha",
+    "Create account",
+    "Forgot password",
 ]
 
 no_logged_icons = [
@@ -79,7 +79,7 @@ query_params = st.experimental_get_query_params()
 page = query_params.get("page", ["Login"])[0]
 
 with st.sidebar:
-    st.write("# BiteCritique")
+    st.write("# BiteCritic")
 
     selected = option_menu(
         menu_title=None,
@@ -97,33 +97,32 @@ with st.sidebar:
     )
     
     st.experimental_set_query_params(page=selected)
-    page = selected
 
 if page == "Login":
     login_page()
-elif page == "Criar conta":
+elif page == "Create account":
     signup_page()
-elif page == "Editar Perfil":
+elif page == "Update Profile":
     update_user_page()
-elif page == "Esqueci a senha":
+elif page == "Forgot password":
     forgot_password_page()
-elif page == "Perfil":
+elif page == "Profile":
     profile_page()
-elif page == "Restaurantes":
+elif page == "Restaurants":
     list_restaurants_page()
 elif page == "Menus":
     list_menus_page()
-elif page == "Avaliações":
+elif page == "Reviews":
     list_reviews_page()
-elif page == "Criar Restaurante":
+elif page == "Create Restaurant":
     create_restaurant_page()
-elif page == "Criar Menu":
+elif page == "Create Menu":
     create_menu_page()
-elif page == "Criar Avaliação":
+elif page == "Create Review":
     create_review_page()
-elif page == "Editar Restaurante":
+elif page == "Update Restaurant":
     update_restaurant_page()
-elif page == "Editar Avaliação":
+elif page == "Update Review":
     update_review_page()
 elif page == "Update Menu":
     update_menu_page()
